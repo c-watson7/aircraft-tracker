@@ -1,0 +1,57 @@
+package tracker.api;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import tracker.util.config.ConfigLoader;
+
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+
+public class AircraftRetriever {
+    private static final Logger LOG = LoggerFactory.getLogger(AircraftRetriever.class);
+
+    private static final ConfigLoader config = new ConfigLoader();
+    private static final String apiKey = config.getProperty("API_KEY");
+    private static final String apiHost = config.getProperty("API_HOST");
+    private static final String apiUri = config.getProperty("API_URI");
+
+    public static void main(String[] args) {
+
+        if (apiKey == null || apiKey.isEmpty()) {
+            String response = sampleResponse();
+            LOG.info("Successful response: {}", response);
+        } else {
+            final HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(apiUri))
+                    .header("X-RapidAPI-Key", apiKey)
+                    .header("X-RapidAPI-Host", apiHost)
+                    .method("GET", HttpRequest.BodyPublishers.noBody())
+                    .build();
+
+            try {
+                HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+                switch (response.statusCode()) {
+                    case 200 -> LOG.info("Successful response: {}", response);
+                    case 404 -> LOG.error("Unsuccessful response: {} - Not Found", response.statusCode());
+                    default -> {
+                        LOG.error("Unsuccessful response: {} - {}", response.statusCode(), response.body());
+                        throw new RuntimeException("ADSB Exchange API call failed with status code " + response.statusCode());
+                    }
+                }
+            } catch (IOException | InterruptedException e) {
+                LOG.error("Could not call ADSB Exchange API", e);
+                throw new RuntimeException("Could not call ADSB Exchange API", e);
+            }
+        }
+    }
+
+    private static String sampleResponse() {
+        JsonSampleLoader loader = new JsonSampleLoader();
+        return loader.loadSampleJson();
+    }
+
+
+}
