@@ -2,7 +2,6 @@ package tracker.api;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import tracker.model.Aircraft;
 import tracker.model.AircraftFlightData;
 import tracker.util.config.ConfigLoader;
 import tracker.util.json.JsonParser;
@@ -22,7 +21,7 @@ public class AircraftRetriever {
     private static final String apiHost = config.getProperty("API_HOST");
     private static final String apiUri = config.getProperty("API_URI");
 
-    public static List<AircraftFlightData> getAircraft() {
+    public static List<AircraftFlightData> getAircraftFlightData() {
         return JsonParser.parseFlightDataJson(getRawJsonFromApi());
     }
     private static String getRawJsonFromApi() {

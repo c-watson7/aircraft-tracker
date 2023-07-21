@@ -1,19 +1,22 @@
 package tracker;
 
 import tracker.api.AircraftRetriever;
+import tracker.model.AircraftFlightData;
+import tracker.service.AircraftService;
 
-
-import java.sql.Timestamp;
-import java.time.Instant;
-import java.time.ZonedDateTime;
-import java.util.Date;
+import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class Application {
 
     public static void main(String[] args) {
-       // AircraftRetriever retriever = new AircraftRetriever();
-
-
-
+        ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+        Runnable task = () -> {
+            List<AircraftFlightData> flightData = AircraftRetriever.getAircraftFlightData();
+            AircraftService.processAndSaveAircraft(flightData);
+        };
+        executor.scheduleAtFixedRate(task, 0, 5, TimeUnit.MINUTES);
     }
 }
