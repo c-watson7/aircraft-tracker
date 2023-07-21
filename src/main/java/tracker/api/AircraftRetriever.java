@@ -2,13 +2,17 @@ package tracker.api;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tracker.model.Aircraft;
+import tracker.model.AircraftFlightData;
 import tracker.util.config.ConfigLoader;
+import tracker.util.json.JsonParser;
 
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.List;
 
 public class AircraftRetriever {
     private static final Logger LOG = LoggerFactory.getLogger(AircraftRetriever.class);
@@ -18,11 +22,14 @@ public class AircraftRetriever {
     private static final String apiHost = config.getProperty("API_HOST");
     private static final String apiUri = config.getProperty("API_URI");
 
-    public static void main(String[] args) {
-
+    public static List<AircraftFlightData> getAircraft() {
+        return JsonParser.parseFlightDataJson(getRawJsonFromApi());
+    }
+    private static String getRawJsonFromApi() {
         if (apiKey == null || apiKey.isEmpty()) {
             String response = sampleResponse();
             LOG.info("Successful response: {}", response);
+            return response;
         } else {
             final HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(apiUri))
@@ -34,10 +41,16 @@ public class AircraftRetriever {
             try {
                 HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
                 switch (response.statusCode()) {
-                    case 200 -> LOG.info("Successful response: {}", response);
-                    case 404 -> LOG.error("Unsuccessful response: {} - Not Found", response.statusCode());
+                    case 200 -> {
+                        LOG.info("Successful ADS-B API response");
+                        return response.body();
+                    }
+                    case 404 -> {
+                        LOG.error("Unsuccessful ADS-B API response");
+                        return null;
+                    }
                     default -> {
-                        LOG.error("Unsuccessful response: {} - {}", response.statusCode(), response.body());
+                        LOG.error("Unsuccessful ADS-B API response: {}", response.statusCode());
                         throw new RuntimeException("ADSB Exchange API call failed with status code " + response.statusCode());
                     }
                 }
@@ -48,10 +61,11 @@ public class AircraftRetriever {
         }
     }
 
+    private AircraftRetriever() {
+    }
+
     private static String sampleResponse() {
         JsonSampleLoader loader = new JsonSampleLoader();
         return loader.loadSampleJson();
     }
-
-
 }

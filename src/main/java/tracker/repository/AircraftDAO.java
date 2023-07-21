@@ -29,7 +29,6 @@ public class AircraftDAO {
             """;
 
 //    public List<tracker.model.Aircraft> getAllAircraft() {
-//        // Use tracker.repository.DatabaseManager.getConnection() to get a connection, then execute a SELECT query to get all aircrafts.
 //    }
 //
     public Aircraft getAircraft(String icao) {
@@ -73,6 +72,5 @@ public class AircraftDAO {
     }
 
     public void updateAircraft(Aircraft aircraft) {
-        // Use tracker.repository.DatabaseManager.getConnection() to get a connection, then execute an UPDATE query to update an existing aircraft.
     }
 }

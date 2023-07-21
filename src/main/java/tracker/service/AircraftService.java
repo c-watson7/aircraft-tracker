@@ -9,8 +9,7 @@ public class AircraftService {
     private final AircraftDAO aircraftDAO = new AircraftDAO();
 
     public void processAndSaveAircraft(AircraftFlightData flightData) {
-        // Perform computations and transformations on the aircraft object
-        // ...
+        // create aircraft object from flightData
 
         // Then save it to the database
        // aircraftDAO.insertAircraft(aircraft);

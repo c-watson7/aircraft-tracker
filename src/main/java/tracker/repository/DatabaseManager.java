@@ -16,10 +16,10 @@ public class DatabaseManager {
     private static final String pw = config.getProperty("pw");
 
     static {
-        hikariConfig.setJdbcUrl(jdbcUrl); // replace with your database URL
-        hikariConfig.setUsername(username); // replace with your username
-        hikariConfig.setPassword(pw); // replace with your password
-        hikariConfig.setMaximumPoolSize(10); // set the maximum pool size
+        hikariConfig.setJdbcUrl(jdbcUrl);
+        hikariConfig.setUsername(username);
+        hikariConfig.setPassword(pw);
+        hikariConfig.setMaximumPoolSize(10);
 
         dataSource = new HikariDataSource(hikariConfig);
     }
