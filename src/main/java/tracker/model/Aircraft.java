@@ -26,7 +26,7 @@ public class Aircraft {
         this.firstSeen = firstSeen;
         this.lastSeen = getTimestamp();
         if(seenMoreThanThirtyMinutesAgo(lastSeen)) {
-            this.totalSeen++;
+            this.totalSeen = totalSeen + 1;
         } else {
             this.totalSeen = totalSeen;
         }

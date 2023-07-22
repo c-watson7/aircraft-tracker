@@ -76,9 +76,9 @@ public class AircraftDAO {
             PreparedStatement statement = connection.prepareStatement(UPDATE_AIRCRAFT);
             statement.setFloat(1, aircraft.getLat());
             statement.setFloat(2, aircraft.getLon());
-            statement.setTimestamp(3, aircraft.getFirstSeen());
-            statement.setTimestamp(4, aircraft.getLastSeen());
-            statement.setInt(5, aircraft.getTotalSeen());
+            statement.setTimestamp(3, aircraft.getLastSeen());
+            statement.setInt(4, aircraft.getTotalSeen());
+            statement.setString(5, aircraft.getIcao());
             statement.execute();
         } catch (SQLException e) {
             LOG.error("Error connecting to DB", e);
