@@ -24,10 +24,11 @@ public class AircraftRetriever {
     public static List<AircraftFlightData> getAircraftFlightData() {
         return JsonParser.parseFlightDataJson(getRawJsonFromApi());
     }
+
     private static String getRawJsonFromApi() {
         if (apiKey == null || apiKey.isEmpty()) {
             String response = sampleResponse();
-            LOG.info("Successful response: {}", response);
+            LOG.info("Read JSON from sample");
             return response;
         } else {
             final HttpRequest request = HttpRequest.newBuilder()
@@ -38,6 +39,7 @@ public class AircraftRetriever {
                     .build();
 
             try {
+                LOG.info("Attempting to retrieve flight data from ADS-B API.");
                 HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
                 switch (response.statusCode()) {
                     case 200 -> {

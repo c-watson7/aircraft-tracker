@@ -28,9 +28,6 @@ public class AircraftDAO {
             WHERE icao = ?
             """;
 
-//    public List<tracker.model.Aircraft> getAllAircraft() {
-//    }
-//
     public Aircraft getAircraft(String icao) {
         try(Connection connection = DatabaseManager.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(GET_AIRCRAFT);

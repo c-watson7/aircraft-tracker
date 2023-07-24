@@ -1,12 +1,16 @@
 package tracker.repository;
 
 import com.zaxxer.hikari.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import tracker.util.config.ConfigLoader;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 
 public class DatabaseManager {
+    private static final Logger LOG = LoggerFactory.getLogger(DatabaseManager.class);
+
     private static final HikariConfig hikariConfig = new HikariConfig();
     private static final HikariDataSource dataSource;
 
@@ -28,6 +32,11 @@ public class DatabaseManager {
     }
 
     public static Connection getConnection() throws SQLException {
-        return dataSource.getConnection();
+        try {
+            return dataSource.getConnection();
+        } catch(SQLException e) {
+            LOG.error("Error while getting a DB connection", e);
+            throw e;
+        }
     }
 }
