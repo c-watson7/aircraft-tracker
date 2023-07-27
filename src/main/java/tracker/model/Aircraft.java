@@ -34,10 +34,10 @@ public class Aircraft {
 
     //For creating new aircraft to insert into DB
     public Aircraft(AircraftFlightData flightData) {
-        this.icao = flightData.icao();
+        this.icao = flightData.hex();
         this.reg = flightData.reg();
         this.cou = flightData.cou();
-        this.type = flightData.type();
+        this.type = flightData.t();
         this.lat = flightData.lat();
         this.lon = flightData.lon();
         this.firstSeen = getTimestamp();

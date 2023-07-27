@@ -43,7 +43,7 @@ public class AircraftRetriever {
                 HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
                 switch (response.statusCode()) {
                     case 200 -> {
-                        LOG.info("Successful ADS-B API response");
+                        LOG.info("Successful ADS-B API response {}", response.body());
                         return response.body();
                     }
                     case 404 -> {

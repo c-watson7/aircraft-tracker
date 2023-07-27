@@ -19,7 +19,7 @@ public class AircraftService {
         LOG.info("Writing data from " + numberOfAircraft + " aircraft.");
 
         for (AircraftFlightData flightData : flightDataList) {
-            Aircraft aircraft = aircraftDAO.getAircraft(flightData.icao());
+            Aircraft aircraft = aircraftDAO.getAircraft(flightData.hex());
             //Query DB - if Aircraft exists update entry
             if(aircraft != null) {
                 aircraftDAO.updateAircraft(aircraft);

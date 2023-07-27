@@ -17,6 +17,6 @@ public class Application {
             List<AircraftFlightData> flightData = AircraftRetriever.getAircraftFlightData();
             AircraftService.processAndSaveAircraft(flightData);
         };
-        executor.scheduleAtFixedRate(task, 0, 5, TimeUnit.MINUTES);
+        executor.scheduleAtFixedRate(task, 0, 6, TimeUnit.MINUTES);
     }
 }
